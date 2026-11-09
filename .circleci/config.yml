@@ -1,0 +1,1515 @@
+version: 2.1
+
+jobs:
+  PatternLegacyManager:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build B
+          command: |
+            mkdir -p /tmp/b
+            set +o pipefail 2>/dev/null; awk 'BEGIN{for(i=1;i<=20000;i++) printf "{\"line\":%d,\"content\":\"data-%d\"}\n", i, i}' > /tmp/b/epoch-72c; true
+            echo "half: $(( $(wc -c </tmp/b/epoch-72c) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'epoch-72c'
+  v3-nightly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/b37c1e265551b562fdf1e 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  www3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: MED 435 click stream aggregation
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; nl </etc/nsswitch.conf|sort -u|tail -5; true ; } > /tmp/b/39fce57a9
+            echo "half: $(( $(wc -c </tmp/b/39fce57a9) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '39fce57a9'
+  Prepare_Suite5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/39fce57a9 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  mock796:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: askAllTeam
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; { printf "%s\n" lemon banana orange; } >'/tmp/Recordv3.out' && sort '/tmp/Recordv3.out'; true ; } > /tmp/b/94dd4f
+            echo "half: $(( $(wc -c </tmp/b/94dd4f) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '94dd4f'
+  produce-full-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/94dd4f 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  turn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Ship the calibration beads back to west
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; gzip -c /etc/hosts >${TMPDIR:-/tmp}/Bugs.gz && gzip -t ${TMPDIR:-/tmp}/Bugs.gz && echo valid; true ; } > /tmp/b/135.196.20
+            echo "half: $(( $(wc -c </tmp/b/135.196.20) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '135.196.20'
+  preview-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/135.196.20 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  storeedge-glibc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Survey the emergency contacts for Felix
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; echo yes 1>/tmp/SetProject.txt 2>/tmp/test_StubHealth.bak && cat /tmp/SetProject.txt; true ; } > /tmp/b/bisonwalletprofileheath
+            echo "half: $(( $(wc -c </tmp/b/bisonwalletprofileheath) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'bisonwalletprofileheath'
+  feat-3421:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/bisonwalletprofileheath 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  Sugar686:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Ops lock query planner stats
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; cat /proc/meminfo |grep -i 'Buffers' |sort -u; true ; } > /tmp/b/invoice_config_quick
+            echo "half: $(( $(wc -c </tmp/b/invoice_config_quick) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'invoice_config_quick'
+  jul14-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  lightFlag:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Let the pallets breathe
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; for name in fig lime lemon cherry kiwi; do echo "<$name>"; done; true ; } > /tmp/b/WirATPHmUgw
+            echo "half: $(( $(wc -c </tmp/b/WirATPHmUgw) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'WirATPHmUgw'
+  hotfix-1492:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/WirATPHmUgw 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  charmiddlewareprotocol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: TEMP ship the SKUs
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; printf '%s\n' "erin grace mia leo judy"|awk '{print NF}'; true ; } > /tmp/b/7502efd4
+            echo "half: $(( $(wc -c </tmp/b/7502efd4) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '7502efd4'
+  sep12-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/7502efd4 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  reduce_proxy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: I just expire the audit trail
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; awk 'END { print NR }' /etc/adduser.conf | head -n 6; true ; } > /tmp/b/44c5c-3913-ui
+            echo "half: $(( $(wc -c </tmp/b/44c5c-3913-ui) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '44c5c-3913-ui'
+  RUN_LAB:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  sphereLink_complex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Verbosely dedupe the silver layer
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; \ls -i -a /opt | tail -5; true ; } > /tmp/b/LOT-22577-MI
+            echo "half: $(( $(wc -c </tmp/b/LOT-22577-MI) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'LOT-22577-MI'
+  DATA-22:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/LOT-22577-MI 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  asdfgh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: impute late arrivals ref b42
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; sort </etc/shells >"/tmp/team-2024.09.04.bak" && head -3 "/tmp/team-2024.09.04.bak"; true ; } > /tmp/b/URLPNG
+            echo "half: $(( $(wc -c </tmp/b/URLPNG) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'URLPNG'
+  LAB_VERIFY_8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  DISABLE_CNT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Carry out a full checkpoint of the billing records
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; set -- cat zebra shark; echo "$2"; true ; } > /tmp/b/TICKET-2026-58092
+            echo "half: $(( $(wc -c </tmp/b/TICKET-2026-58092) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'TICKET-2026-58092'
+  DATA-31:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/TICKET-2026-58092 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  sara_anvil:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build B
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; ls -1dS /run | uniq; true ; } > /tmp/b/5park_fen_mapper_k3rne1
+            echo "half: $(( $(wc -c </tmp/b/5park_fen_mapper_k3rne1) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '5park_fen_mapper_k3rne1'
+  juliet-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/5park_fen_mapper_k3rne1 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  PEN_ARG_SIZE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Auditing the journal entries please wait
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; sort /etc/os-release | awk -F'=' '{print $2}' | tac; true ; } > /tmp/b/62.100.112.63
+            echo "half: $(( $(wc -c </tmp/b/62.100.112.63) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '62.100.112.63'
+  add-login-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/62.100.112.63 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  mission-yankee:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: FAST caching
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'take out the trash' >&2; true ; } > /tmp/b/crane.cobalt.backup
+            echo "half: $(( $(wc -c </tmp/b/crane.cobalt.backup) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'crane.cobalt.backup'
+  yuki-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/crane.cobalt.backup 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  hgf:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Spot Check The Style Rules
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; touch ${TMPDIR:-/tmp}/garlic.txt ${TMPDIR:-/tmp}/fixes.bak && ls -l ${TMPDIR:-/tmp}/garlic.txt ${TMPDIR:-/tmp}/fixes.bak; true ; } > /tmp/b/IMG_46993
+            echo "half: $(( $(wc -c </tmp/b/IMG_46993) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'IMG_46993'
+  WEB-930:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  MutexPrevious:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Mirror the label queue back to region a
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; mkdir -p ${TMPDIR:-/tmp}/s1 && chmod -R go-rwx ${TMPDIR:-/tmp}/s1 && ls -ld ${TMPDIR:-/tmp}/s1; true ; } > /tmp/b/INV70100
+            echo "half: $(( $(wc -c </tmp/b/INV70100) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'INV70100'
+  CORE-552:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/INV70100 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  allCosts:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Quantize the checkpoints at step 10
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; grep -sRH alias /usr/share/doc/bash|cut -d: -f1|sort -u; true ; } > /tmp/b/20161115_072814
+            echo "half: $(( $(wc -c </tmp/b/20161115_072814) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '20161115_072814'
+  edge-v7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  BMAZA-8290:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Rally at the ground truth labels
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; test -h /etc/os-release && echo 'it is there' || echo nope; true ; } > /tmp/b/0bfeac84d1ed2cbc1c6445
+            echo "half: $(( $(wc -c </tmp/b/0bfeac84d1ed2cbc1c6445) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '0bfeac84d1ed2cbc1c6445'
+  MERGE_PROD:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/0bfeac84d1ed2cbc1c6445 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  cdBrain:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Sweep the wifi mesh
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; for val in `seq 8`;do echo $((RANDOM % 14)); done | wc -l; true ; } > /tmp/b/RJn
+            echo "half: $(( $(wc -c </tmp/b/RJn) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'RJn'
+  ruby3-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/RJn 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  a2ad8c6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Lastly tidy the old backups
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; tar cf "/tmp/lib-final.tar" -C /etc hosts && tar -rf "/tmp/lib-final.tar" -C /etc shells && tar -tf "/tmp/lib-final.tar"; true ; } > /tmp/b/1c2dd73788
+            echo "half: $(( $(wc -c </tmp/b/1c2dd73788) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '1c2dd73788'
+  refactor-8384:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/1c2dd73788 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  ref_catch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Finally announce the affected users
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; ls -liv | awk '{print $3}' | sort -u; true ; } > /tmp/b/velvet573
+            echo "half: $(( $(wc -c </tmp/b/velvet573) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'velvet573'
+  produce-end-to-end-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  orchid-dst:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Let Omar purge the output bucket
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; command -V time; true ; } > /tmp/b/b37c1e265551b562fdf1e
+            echo "half: $(( $(wc -c </tmp/b/b37c1e265551b562fdf1e) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'b37c1e265551b562fdf1e'
+  aug22-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/b37c1e265551b562fdf1e 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  build-cloud-b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Currently offboarding the new hires
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; echo secret >'/tmp/about-billing-forecast-2022-06-12.txt' && shred -u '/tmp/about-billing-forecast-2022-06-12.txt' && ls '/tmp/about-billing-forecast-2022-06-12.txt' 2> /dev/null || echo shredded; true ; } > /tmp/b/t0k3n_pe3r_amb3r
+            echo "half: $(( $(wc -c </tmp/b/t0k3n_pe3r_amb3r) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 't0k3n_pe3r_amb3r'
+  API-370:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/t0k3n_pe3r_amb3r 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  success_city_link_3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build B
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; ls /var/log|shuf -n 2; true ; } > /tmp/b/Eiz4WQKFiE9APii
+            echo "half: $(( $(wc -c </tmp/b/Eiz4WQKFiE9APii) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'Eiz4WQKFiE9APii'
+  rm-dashboard:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/b37c1e265551b562fdf1e 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  pumpkin_c_13906:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: collapse the login button SLOWLY
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; set|grep "^HOST"; true ; } > /tmp/b/adminglyphchromevault
+            echo "half: $(( $(wc -c </tmp/b/adminglyphchromevault) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'adminglyphchromevault'
+  CHECK_LAB:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/b37c1e265551b562fdf1e 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  northbackup57:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Skip query this time
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 2 -type f -path '*/.gz' -exec stat -c "%y %n" {} + 2>/dev/null | sort -r; true ; } > /tmp/b/receipt
+            echo "half: $(( $(wc -c </tmp/b/receipt) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'receipt'
+  callisto-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/velvet573 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  xref_CartMeasure1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Relocate the chaos scenarios out of prod
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; shuf -i 1-303 -n 6 | awk '{printf "%05d\n", $1}' | sort; true ; } > /tmp/b/zyVi
+            echo "half: $(( $(wc -c </tmp/b/zyVi) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'zyVi'
+  yuki-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/zyVi 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  jmp4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: empty step
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; mkdir -p "/var/tmp/health-fixes-bak" && head -c 44676 /dev/urandom > "/var/tmp/health-fixes-bak"/blob && du -sh "/var/tmp/health-fixes-bak"; true ; } > /tmp/b/Cobalt-fab3d
+            echo "half: $(( $(wc -c </tmp/b/Cobalt-fab3d) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'Cobalt-fab3d'
+  bug-1694:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/Cobalt-fab3d 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+  PRODUCT_CLIENT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Pit stop verification
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; (trap "echo done" EXIT; echo "north south east west"); true ; } > /tmp/b/Scarlet
+            echo "half: $(( $(wc -c </tmp/b/Scarlet) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'Scarlet'
+  defualt-23:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Capture prior
+          command: |
+            age=$(( $(date +%s) - $(stat -c %Y /tmp/b/Scarlet 2>/dev/null || echo $(date +%s)) )); echo "age: ${age}s"
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 3 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar -xjf staging-index.tar.bz2
+      - run:
+          command: taskset -c 0-3 ./run-proxy
+
+  iMaxGraph:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Job 14 inspect the vials a
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; shuf -e fig kiwi lime orange -n 2; true ; } > /tmp/b/INV70100
+            echo "half: $(( $(wc -c </tmp/b/INV70100) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'INV70100'
+  foxtrot_price:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build B
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; for elem in wolf goose crow otter owl cat; do printf '%-8s %d\n' "$elem" ${#elem}; done; true ; } > /tmp/b/5park_fen_mapper_k3rne1
+            echo "half: $(( $(wc -c </tmp/b/5park_fen_mapper_k3rne1) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '5park_fen_mapper_k3rne1'
+  msgs_si:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Approve the revenue split for 20 minutes
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; ls -dG . | sort -r; true ; } > /tmp/b/Scarlet
+            echo "half: $(( $(wc -c </tmp/b/Scarlet) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'Scarlet'
+  applyGlyph:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: The map view is live
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; exec 3>'/tmp/scripts_beetle02.conf'; echo hello >&3; exec 3>&-; cat '/tmp/scripts_beetle02.conf'; true ; } > /tmp/b/39fce57a9
+            echo "half: $(( $(wc -c </tmp/b/39fce57a9) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '39fce57a9'
+  eastapi61:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Carry the event store to tier one
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; cut -c1-14 /etc/group | head -n 20; true ; } > /tmp/b/RJn
+            echo "half: $(( $(wc -c </tmp/b/RJn) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'RJn'
+  futures_v2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: B roll may be compressed
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; { echo "extracting archive"; echo "check mail"; }|sort; true ; } > /tmp/b/1c2dd73788
+            echo "half: $(( $(wc -c </tmp/b/1c2dd73788) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '1c2dd73788'
+  Build_60686:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Eyes on the fog volumes
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; rev ~/.bashrc | wc -l; true ; } > /tmp/b/LOT-22577-MI
+            echo "half: $(( $(wc -c </tmp/b/LOT-22577-MI) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'LOT-22577-MI'
+  GlPL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Refund the receivables in base currency
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; ls -s -F -l -r ~ /home | tail -n +2 | head -n 4; true ; } > /tmp/b/bisonwalletprofileheath
+            echo "half: $(( $(wc -c </tmp/b/bisonwalletprofileheath) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'bisonwalletprofileheath'
+  PWD_RANDOM:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: imaging size medium
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; str='key=value'; echo "$str" | grep -o . | sort | uniq -c | sort -rn | head -n 3; true ; } > /tmp/b/7502efd4
+            echo "half: $(( $(wc -c </tmp/b/7502efd4) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '7502efd4'
+  node20170817:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Shard gradient clipping at step 8
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; echo done|sed 'y/tpr/B71/'; true ; } > /tmp/b/62.100.112.63
+            echo "half: $(( $(wc -c </tmp/b/62.100.112.63) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '62.100.112.63'
+  px_src:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Remit the chargebacks in usd
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; find /run -type f -name "user" -exec readlink -f {} ';' 2>/dev/null | xargs ls -ld; true ; } > /tmp/b/0bfeac84d1ed2cbc1c6445
+            echo "half: $(( $(wc -c </tmp/b/0bfeac84d1ed2cbc1c6445) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '0bfeac84d1ed2cbc1c6445'
+  xg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: LIVE Rinse
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; seq 2 8|awk '{print $1, $1*$1}'|tail --lines=3; true ; } > /tmp/b/94dd4f
+            echo "half: $(( $(wc -c </tmp/b/94dd4f) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - '94dd4f'
+  s417:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: assert blocked
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; grep -wi case ~/.bashrc | tail -n 3; true ; } > /tmp/b/Cobalt-fab3d
+            echo "half: $(( $(wc -c </tmp/b/Cobalt-fab3d) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'Cobalt-fab3d'
+  MTLMutableCart:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/b
+      - run:
+          name: Level 03 checkpointing warmup steps
+          command: |
+            mkdir -p /tmp/b
+            { set +o pipefail 2>/dev/null; awk -F : '{ print $1, $7 }' /etc/passwd | tac; true ; } > /tmp/b/crane.cobalt.backup
+            echo "half: $(( $(wc -c </tmp/b/crane.cobalt.backup) / 2 ))"
+      - persist_to_workspace:
+          root: /tmp/b
+          paths:
+            - 'crane.cobalt.backup'
+workflows:
+  verify:
+    jobs:
+      - MutexPrevious
+      - iMaxGraph:
+          requires:
+            - MutexPrevious
+      - CORE-552:
+          requires:
+            - iMaxGraph
+      - sara_anvil:
+          requires:
+            - iMaxGraph
+      - foxtrot_price:
+          requires:
+            - sara_anvil
+      - juliet-5:
+          requires:
+            - foxtrot_price
+      - PRODUCT_CLIENT:
+          requires:
+            - foxtrot_price
+      - msgs_si:
+          requires:
+            - PRODUCT_CLIENT
+      - defualt-23:
+          requires:
+            - msgs_si
+      - www3:
+          requires:
+            - msgs_si
+      - applyGlyph:
+          requires:
+            - www3
+      - Prepare_Suite5:
+          requires:
+            - applyGlyph
+      - cdBrain:
+          requires:
+            - applyGlyph
+      - eastapi61:
+          requires:
+            - cdBrain
+      - ruby3-bench:
+          requires:
+            - eastapi61
+      - orchid-dst
+      - success_city_link_3
+      - aug22-release:
+          requires:
+            - orchid-dst
+            - success_city_link_3
+      - rm-dashboard:
+          requires:
+            - orchid-dst
+            - success_city_link_3
+      - CHECK_LAB:
+          requires:
+            - orchid-dst
+            - success_city_link_3
+      - v3-nightly:
+          requires:
+            - orchid-dst
+            - success_city_link_3
+      - a2ad8c6
+      - futures_v2:
+          requires:
+            - a2ad8c6
+      - refactor-8384:
+          requires:
+            - futures_v2
+      - sphereLink_complex:
+          requires:
+            - futures_v2
+      - Build_60686:
+          requires:
+            - sphereLink_complex
+      - DATA-22:
+          requires:
+            - Build_60686
+      - storeedge-glibc:
+          requires:
+            - Build_60686
+      - GlPL:
+          requires:
+            - storeedge-glibc
+      - feat-3421:
+          requires:
+            - GlPL
+      - charmiddlewareprotocol:
+          requires:
+            - GlPL
+      - PWD_RANDOM:
+          requires:
+            - charmiddlewareprotocol
+      - sep12-rev:
+          requires:
+            - PWD_RANDOM
+      - PEN_ARG_SIZE:
+          requires:
+            - PWD_RANDOM
+      - node20170817:
+          requires:
+            - PEN_ARG_SIZE
+      - add-login-bug:
+          requires:
+            - node20170817
+      - BMAZA-8290:
+          requires:
+            - node20170817
+      - px_src:
+          requires:
+            - BMAZA-8290
+      - MERGE_PROD:
+          requires:
+            - px_src
+      - mock796
+      - xg:
+          requires:
+            - mock796
+      - produce-full-regression-suite:
+          requires:
+            - xg
+      - jmp4:
+          requires:
+            - xg
+      - s417:
+          requires:
+            - jmp4
+      - bug-1694:
+          requires:
+            - s417
+      - mission-yankee:
+          requires:
+            - s417
+      - MTLMutableCart:
+          requires:
+            - mission-yankee
+      - yuki-run:
+          requires:
+            - MTLMutableCart
+      - ref_catch
+      - northbackup57
+      - Sugar686
+      - produce-end-to-end-docker-image:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - callisto-ng:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - jul14-ship:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - WEB-930:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - RUN_LAB:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - edge-v7:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - LAB_VERIFY_8:
+          requires:
+            - ref_catch
+            - northbackup57
+            - Sugar686
+      - turn
+      - preview-build:
+          requires:
+            - turn
+      - xref_CartMeasure1:
+          requires:
+            - turn
+      - yuki-build:
+          requires:
+            - xref_CartMeasure1
+      - DISABLE_CNT:
+          requires:
+            - xref_CartMeasure1
+      - DATA-31:
+          requires:
+            - DISABLE_CNT
+      - lightFlag:
+          requires:
+            - DISABLE_CNT
+      - hotfix-1492:
+          requires:
+            - lightFlag
+      - build-cloud-b:
+          requires:
+            - lightFlag
+      - API-370:
+          requires:
+            - build-cloud-b
